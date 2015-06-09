@@ -1,0 +1,32 @@
+<head>
+  <title>Chatroom Security Challenge</title>
+  <meta name="viewport" content="width=device-width, user-scalable=no">
+  <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+  <div class="outer">
+    <h1 class="title">Chatroom Security Challenge</h1>
+    <p><strong>Challenge: implement an <code>update</code> security layer for messages using only allow & deny.</strong></p>
+    <p>Messages can be edited (note that this is not implemented in the UI, so you can just do it through the console) and liked. You can only edit your own messages, but you can like anybody's messages once.</p>
+    <p>Liking should also update a <code>likesCount</code> property on the message object that holds the total number of likes.</p>
+    {{> loginButtons}}
+    {{> chatroom}}
+  </div>
+</body>
+
+<template name="chatroom">
+  {{#each messages}}
+    {{> message}}
+  {{/each}}
+  <hr/>
+  <textarea id="message"></textarea>
+  <input type="submit" id="submit"/>
+</template>
+
+<template name="message">
+  <p>
+    <strong>{{username}}</strong>: {{body}} 
+    <button class="like">Like! ({{likesCount}})</button>
+  </p>
+</template>

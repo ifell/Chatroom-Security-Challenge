@@ -1,0 +1,7 @@
+autopublish
+meteor-platform
+aldeed:simple-schema
+accounts-ui
+accounts-password
+sanjo:jasmine
+velocity:html-reporter
