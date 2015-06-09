@@ -332,6 +332,60 @@ describe('Messages User', function() {
     });
   });
 
+  it ('should not increase like count more than once', function(done) {
+    //setup
+    Meteor.loginWithPassword('user1', 'password123', function(error) {
+      expect(error).toEqual(undefined);
+
+      //execute
+      Messages.update({_id: user1_post1._id}, {$addToSet: {likes: Meteor.userId()}, $inc: {likesCount: 2}}, function(error, res) {
+        //verify
+        expect(error).toBeDefined();
+        expect(res).toBeFalsy();
+        expect(Messages.findOne({_id: user1_post1._id}).likes).toEqual([]);
+        expect(Messages.findOne({_id: user1_post1._id}).likesCount).toEqual(0);
+
+        done();
+      });
+    });
+  });
+
+  it ('should not decrease like count when adding user to likes', function(done) {
+    //setup
+    Meteor.loginWithPassword('user1', 'password123', function(error) {
+      expect(error).toEqual(undefined);
+
+      //execute
+      Messages.update({_id: user1_post1._id}, {$addToSet: {likes: Meteor.userId()}, $inc: {likesCount: -1}}, function(error, res) {
+        //verify
+        expect(error).toBeDefined();
+        expect(res).toBeFalsy();
+        expect(Messages.findOne({_id: user1_post1._id}).likes).toEqual([]);
+        expect(Messages.findOne({_id: user1_post1._id}).likesCount).toEqual(0);
+
+        done();
+      });
+    });
+  });
+
+  it ('should not add extra users to likes set in one operation', function(done) {
+    //setup
+    Meteor.loginWithPassword('user1', 'password123', function(error) {
+      expect(error).toEqual(undefined);
+
+      //execute
+      Messages.update({_id: user1_post1._id}, {$addToSet: {likes: Meteor.userId(), likes: 'hello'}, $inc: {likesCount: 1}}, function(error, res) {
+        //verify
+        expect(error).toBeDefined();
+        expect(res).toBeFalsy();
+        expect(Messages.findOne({_id: user1_post1._id}).likes).toEqual([]);
+        expect(Messages.findOne({_id: user1_post1._id}).likesCount).toEqual(0);
+
+        done();
+      });
+    });
+  });
+
   afterEach(function(done) {
     Meteor.call('dropDatabase', done);
   });

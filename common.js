@@ -38,14 +38,6 @@ Meteor.methods({
 
 // ------------------ Allow & Deny ----------------- //
 
-// Method for jasmine testing purposes
-Meteor.methods({
-  dropDatabase: function() {
-    Meteor.users.remove({});
-    Messages.remove({});
-  }
-});
-
 // Start here
 
 Messages.allow({
